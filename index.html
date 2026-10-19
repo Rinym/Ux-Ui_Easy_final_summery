@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ติว UX/UI พร้อมตัวอย่างที่กดใช้งานได้</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f2f5f9;--surf:#fff;--ink:#14213d;--mut:#55627a;--line:#d5dce8;--acc:#2a62d6;--acc-ink:#fff;--ok:#157a4a;--bad:#c0332b;--warn:#a86400;--okbg:#e2f4ea;--badbg:#fbe6e4;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1624;--surf:#18223a;--ink:#e8edf7;--mut:#9aa7c0;--line:#2c3a58;--acc:#6b9bff;--acc-ink:#0f1624;--ok:#5fd397;--bad:#ff8a80;--warn:#f0b35a;--okbg:#12352550;--badbg:#4a1d1d60}}
+:root[data-theme="dark"]{--bg:#0f1624;--surf:#18223a;--ink:#e8edf7;--mut:#9aa7c0;--line:#2c3a58;--acc:#6b9bff;--acc-ink:#0f1624;--ok:#5fd397;--bad:#ff8a80;--warn:#f0b35a;--okbg:#12352550;--badbg:#4a1d1d60}
+*{box-sizing:border-box}html{scroll-padding-top:64px;scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.7 "IBM Plex Sans Thai",system-ui,sans-serif}
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surf);border-bottom:1px solid var(--line);display:flex;gap:4px;overflow-x:auto;padding:8px 12px}
+header.top a{white-space:nowrap;padding:8px 14px;border-radius:8px;color:var(--ink);text-decoration:none;font-weight:500;font-size:15px}
+header.top a:hover{background:var(--bg)}
+a:focus-visible,button:focus-visible,select:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+main{max-width:880px;margin:0 auto;padding:0 16px 80px}
+.hero{padding:48px 0 24px}.hero h1{font-size:clamp(30px,6vw,46px);line-height:1.2;margin:0 0 12px;font-weight:700}
+.hero p{color:var(--mut);max-width:60ch;margin:0}
+section{padding:40px 0 8px;border-top:1px solid var(--line);margin-top:32px}
+h2{font-size:26px;margin:0 0 6px}h3{font-size:18px;margin:24px 0 8px}
+.sub{color:var(--mut);margin:0 0 16px}
+.demo{background:var(--surf);border:1px solid var(--line);border-radius:12px;padding:18px;margin:16px 0}
+.demo>.tag{font-weight:700;font-size:14px;color:var(--acc);margin-bottom:10px}
+button,select,input[type=text],input[type=email],input[type=password]{font:inherit;color:var(--ink)}
+.btn{background:var(--acc);color:var(--acc-ink);border:0;border-radius:8px;padding:10px 18px;min-height:44px;font-weight:500;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;margin-bottom:14px}
+.seg button{background:transparent;border:0;padding:8px 16px;min-height:44px;cursor:pointer}
+.seg button[aria-pressed=true]{background:var(--acc);color:var(--acc-ink)}
+label{display:block;font-weight:500;margin:10px 0 4px}
+input[type=text],input[type=email],input[type=password],select{width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:8px;background:var(--bg);min-height:44px}
+input.err{border-color:var(--bad)}input.good{border-color:var(--ok)}
+.msg{font-size:14px;min-height:22px;margin-top:4px}.msg.e{color:var(--bad)}.msg.o{color:var(--ok)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}@media(max-width:640px){.grid2{grid-template-columns:1fr}}
+details{border:1px solid var(--line);border-radius:8px;background:var(--surf);margin:6px 0;padding:0 14px}
+summary{cursor:pointer;padding:10px 0;font-weight:500}details p{margin:0 0 12px;color:var(--mut)}
+.pill{display:inline-block;padding:2px 10px;border-radius:99px;font-size:13px;font-weight:500;background:var(--bg);border:1px solid var(--line)}
+.cards{display:flex;flex-wrap:wrap;gap:8px;min-height:48px;padding:8px;border:1px dashed var(--line);border-radius:8px}
+.card{background:var(--surf);border:1.5px solid var(--line);border-radius:8px;padding:6px 12px;cursor:pointer;min-height:40px}
+.card.sel{border-color:var(--acc);background:var(--acc);color:var(--acc-ink)}
+.card.right{border-color:var(--ok);background:var(--okbg)}.card.wrong{border-color:var(--bad);background:var(--badbg)}
+.bins{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}@media(max-width:640px){.bins{grid-template-columns:1fr}}
+.bin h4{margin:0 0 6px;font-size:15px}.bin .cards{cursor:pointer}
+.tree,.tree ul{list-style:none;margin:0;padding-left:20px;border-left:2px solid var(--line)}.tree{border:0;padding:0}
+.tree li{padding:2px 0 2px 10px}.tree>li>b{font-size:17px}
+.mock{border:1.5px solid var(--line);border-radius:10px;padding:14px;background:var(--bg);margin-bottom:10px}
+.res{margin-top:12px;padding:12px;border-radius:8px;background:var(--bg);border:1px solid var(--line)}
+.bar{height:22px;border-radius:6px;background:var(--acc);color:var(--acc-ink);font-size:13px;padding:0 8px;line-height:22px;min-width:30px;margin:4px 0}
+.ok{color:var(--ok);font-weight:700}.bad{color:var(--bad);font-weight:700}.warn{color:var(--warn);font-weight:700}
+table{border-collapse:collapse;width:100%;font-size:15px}td,th{border-bottom:1px solid var(--line);padding:8px;text-align:left;vertical-align:top}
+.scroll{overflow-x:auto}
+input[type=range]{width:100%;accent-color:var(--acc);min-height:32px}
+.sw{display:flex;gap:10px;align-items:center;flex-wrap:wrap}input[type=color]{width:56px;height:44px;border:1px solid var(--line);border-radius:8px;background:transparent;padding:2px}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<header class="top" aria-label="เมนูหัวข้อ">
+<a href="#q1">ข้อ 1+3 Golden Rules</a><a href="#q2">ข้อ 2 IA</a><a href="#q4">ข้อ 4 Heuristics</a><a href="#q5">ข้อ 5 A/B</a><a href="#q6">ข้อ 6 UD</a>
+</header>
+<main>
+<div class="hero"><h1>ติว UX/UI ด้วยตัวอย่างที่กดลองได้จริง</h1>
+<p>ทุกหัวข้อมีเดโมให้ลงมือทำ: ฟอร์มก่อน/หลังแก้, Card Sorting, จับผิด Heuristic, จำลอง A/B Test และตัวเช็คคอนทราสต์ เนื้อหาเป็นหลักการมาตรฐาน ไม่ใช่เฉลยข้อสอบจริง ควรเทียบกับสไลด์อาจารย์อีกครั้ง</p></div>
+
+<!-- Q1+3 -->
+<section id="q1"><h2>ข้อ 1 + 3: Shneiderman’s Eight Golden Rules</h2>
+<p class="sub">กด “แบบมีปัญหา” แล้วลองส่งฟอร์ม จากนั้นสลับเป็น “แบบแก้แล้ว” เพื่อเทียบ</p>
+<div class="demo"><div class="tag">เดโม: ฟอร์มสมัครสมาชิก</div>
+<div class="seg" role="group" aria-label="เลือกเวอร์ชัน"><button id="vBad" aria-pressed="true">แบบมีปัญหา</button><button id="vGood" aria-pressed="false">แบบแก้แล้ว</button></div>
+<div id="formBox"></div>
+<div class="res" id="formNote"></div></div>
+<div class="demo"><div class="tag">เดโม: รายการงาน (ข้อ 2 shortcut, 3 feedback, 6 เลิกทำ, 7 ควบคุมเอง)</div><p style="margin-top:0">พิมพ์แล้วกด Enter เพื่อเพิ่ม · กดปุ่ม N เพื่อกระโดดไปช่องพิมพ์ · ลบแล้วกด “เลิกทำ” ได้</p><input type="text" id="tIn" placeholder="เพิ่มงานใหม่ แล้วกด Enter" aria-label="เพิ่มงาน"><div id="tList" style="margin-top:8px"></div><div class="res" id="tMsg" role="status">ยังไม่มีการกระทำ ลองเพิ่มหรือลบงานดู</div></div>
+<h3>ทั้ง 8 ข้อ (กดเพื่อดูตัวอย่าง)</h3>
+<details><summary>1. Strive for consistency</summary><p>ใช้คำ สี ตำแหน่งปุ่มเหมือนกันทุกหน้า เช่น ปุ่มหลักสีเดียวกันและอยู่ขวาล่างเสมอ</p></details>
+<details><summary>2. Seek universal usability</summary><p>รองรับมือใหม่ถึงผู้เชี่ยวชาญ ผู้สูงอายุ ผู้พิการ เช่น shortcut, ปรับขนาดตัวอักษร (ฉบับเก่า: Enable frequent users to use shortcuts)</p></details>
+<details><summary>3. Offer informative feedback</summary><p>ทุกการกระทำต้องมีผลตอบกลับ เช่น loading, “บันทึกสำเร็จ”</p></details>
+<details><summary>4. Design dialogs to yield closure</summary><p>ลำดับงานมีเริ่ม กลาง จบ เช่น หน้า “สั่งซื้อสำเร็จ” หลัง checkout</p></details>
+<details><summary>5. Prevent errors / simple error handling</summary><p>ออกแบบไม่ให้ผิดตั้งแต่แรก เช่น dropdown วันที่, disable ปุ่มจนกรอกครบ</p></details>
+<details><summary>6. Permit easy reversal of actions</summary><p>Undo, ถังขยะกู้คืนได้ ผู้ใช้กล้าลองเพราะไม่กลัวพลาด</p></details>
+<details><summary>7. Keep users in control</summary><p>ผู้ใช้เป็นผู้ควบคุม ไม่ใช่ระบบ เช่น ยกเลิกหรือออกจากขั้นตอนได้ตลอด</p></details>
+<details><summary>8. Reduce short-term memory load</summary><p>ให้เห็นแทนการให้จำ เช่น autocomplete, สรุปรายการก่อนยืนยัน</p></details>
+<div class="demo"><div class="tag">แบบทดสอบข้อ 1+3</div><div class="quiz" data-q="q1"></div></div>
+<h3>ตัวอย่างการตอบ</h3>
+<p>“ฟอร์มแจ้ง error หลังกดส่งเท่านั้นและไม่บอกว่าช่องไหนผิด” → ละเมิดข้อ 3 (Feedback) และข้อ 5 (Error handling) → แก้โดย validate แบบ real-time ชี้ช่องที่ผิดพร้อมข้อความบอกวิธีแก้</p>
+</section>
+
+<!-- Q2 -->
+<section id="q2"><h2>ข้อ 2: Information Architecture</h2>
+<p class="sub">IA ประกอบด้วย Organization, Labeling, Navigation, Search ลองทำ Closed Card Sorting ของร้านค้าออนไลน์</p>
+<div class="demo"><div class="tag">เดโม: Closed Card Sorting</div>
+<p style="margin-top:0">1) กดการ์ดเพื่อเลือก 2) กดกล่องหมวดที่ต้องการวาง (กดการ์ดในกล่องเพื่อเอาออก)</p>
+<div class="cards" id="pool" aria-label="การ์ดที่ยังไม่จัด"></div>
+<div class="bins" id="bins"></div>
+<div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn" id="csCheck">ตรวจคำตอบ</button><button class="btn ghost" id="csReset">เริ่มใหม่</button></div>
+<div class="res" id="csRes" aria-live="polite">จัดการ์ดให้ครบก่อนตรวจคำตอบ</div></div>
+<div class="demo"><div class="tag">Sitemap ที่ได้จากการจัดกลุ่ม (Hierarchical)</div>
+<ul class="tree"><li><b>หน้าแรก</b><ul>
+<li>สินค้า<ul><li>เสื้อผ้า</li><li>รองเท้า</li><li>กระเป๋า</li></ul></li>
+<li>สั่งซื้อและจัดส่ง<ul><li>ตะกร้าสินค้า</li><li>ติดตามพัสดุ</li><li>วิธีชำระเงิน</li></ul></li>
+<li>ช่วยเหลือ<ul><li>คืนสินค้า</li><li>คำถามที่พบบ่อย</li><li>ติดต่อเรา</li></ul></li></ul></li></ul></div>
+<div class="demo"><div class="tag">เดโม: Tree Testing (ไม่มี UI มีแค่ชื่อหมวด)</div><div id="tt"></div></div>
+<table><tr><th>ประเภท</th><th>วิธี</th><th>ใช้เมื่อ</th></tr>
+<tr><td>Open</td><td>ผู้ใช้จัดกลุ่มและตั้งชื่อเอง</td><td>สร้างโครงสร้างใหม่</td></tr>
+<tr><td>Closed</td><td>จัดเข้ากลุ่มที่กำหนดไว้</td><td>ทดสอบหมวดที่มีอยู่</td></tr>
+<tr><td>Hybrid</td><td>มีกลุ่มให้ และเพิ่มกลุ่มได้</td><td>ผสมสองแบบ</td></tr></table>
+<div class="demo"><div class="tag">แบบทดสอบข้อ 2</div><div class="quiz" data-q="q2"></div></div>
+<p class="sub" style="margin-top:12px">ขั้นตอน: เลือกเนื้อหา → ทำการ์ด → ผู้ใช้จัดกลุ่ม → วิเคราะห์ → สร้าง Sitemap → ยืนยันด้วย Tree Testing</p>
+</section>
+
+<!-- Q4 -->
+<section id="q4"><h2>ข้อ 4: Evaluation (Nielsen’s 10 Heuristics)</h2>
+<p class="sub">จับผิดหน้าจอจริง เลือก heuristic ที่ถูกละเมิดในแต่ละกรณี แล้วกดตรวจ</p>
+<div class="demo"><div class="tag">เดโม: Heuristic Evaluation</div><div id="heur"></div>
+<button class="btn" id="hCheck">ตรวจคำตอบ</button><div class="res" id="hRes" aria-live="polite">เลือกคำตอบทุกข้อแล้วกดตรวจ</div></div>
+<h3>Evaluation คืออะไร</h3>
+<p>Evaluation คือการประเมินว่า interface ใช้งานง่ายแค่ไหนและมีปัญหาตรงไหน ทำได้สองแบบ: <b>ผู้เชี่ยวชาญตรวจ</b> (เช่น Heuristic Evaluation) หรือ <b>ผู้ใช้จริงลองใช้</b> (เช่น Usability Testing) Heuristic Evaluation คือให้ evaluator 3-5 คนตรวจหน้าจอทีละหน้า เทียบกับหลัก 10 ข้อของ Jakob Nielsen แล้วจดปัญหา พร้อมระบุว่าละเมิดข้อไหนและร้ายแรงแค่ไหน ข้อดีคือเร็วและถูก ไม่ต้องหาผู้ใช้ แต่ไม่ใช่ผู้ใช้จริง จึงควรใช้ร่วมกับ Usability Testing</p>
+<h3>อธิบาย Nielsen’s 10 Heuristics (กดเพื่อดู)</h3>
+<details><summary>1. Visibility of system status: บอกสถานะให้ผู้ใช้รู้เสมอ</summary><p><b>ความหมาย:</b> ระบบต้องบอกว่ากำลังเกิดอะไรขึ้น ภายในเวลาที่เหมาะสม<br><b>ดี:</b> แถบความคืบหน้าตอนอัปโหลด, สถานะพัสดุ “กำลังจัดส่ง”<br><b>แย่:</b> กดชำระเงินแล้วหน้าจอนิ่ง ไม่รู้ว่าสำเร็จหรือยัง</p></details>
+<details><summary>2. Match between system and the real world: ใช้ภาษาและแนวคิดของผู้ใช้</summary><p><b>ความหมาย:</b> พูดภาษาที่ผู้ใช้เข้าใจ เรียงข้อมูลตามลำดับที่เป็นธรรมชาติ ไม่ใช้ศัพท์เทคนิคของระบบ<br><b>ดี:</b> ไอคอนตะกร้า ถังขยะ ซองจดหมาย<br><b>แย่:</b> ข้อความ “Fatal exception” แทนที่จะบอกว่าอินเทอร์เน็ตหลุด</p></details>
+<details><summary>3. User control and freedom: ออกจากสถานการณ์ที่พลาดได้ง่าย</summary><p><b>ความหมาย:</b> ผู้ใช้กดผิดได้เสมอ ต้องมีทางออกฉุกเฉิน ย้อนกลับ ยกเลิก ทำซ้ำ<br><b>ดี:</b> Undo, Cancel, ปุ่ม Back, “เลิกส่งอีเมล”<br><b>แย่:</b> ขั้นตอนสมัครที่ไม่มีปุ่มย้อนกลับ ต้องกรอกใหม่ทั้งหมด</p></details>
+<details><summary>4. Consistency and standards: สอดคล้องและเป็นไปตามมาตรฐาน</summary><p><b>ความหมาย:</b> สิ่งเดียวกันต้องเรียกและทำงานเหมือนกัน และเป็นไปตามแนวปฏิบัติที่ผู้ใช้คุ้นจากแอปอื่น<br><b>ดี:</b> โลโก้มุมซ้ายบนกดแล้วกลับหน้าแรก, ไอคอนค้นหาเป็นแว่นขยาย<br><b>แย่:</b> หน้าหนึ่งใช้ “บันทึก” อีกหน้าใช้ “ตกลง” “เซฟ” ปนกัน</p></details>
+<details><summary>5. Error prevention: ป้องกันก่อนเกิดข้อผิดพลาด</summary><p><b>ความหมาย:</b> ดีกว่าการแจ้ง error ที่ดี คือออกแบบไม่ให้เกิด error เลย<br><b>ดี:</b> ถามยืนยันก่อนลบ, ปุ่มส่งใช้ไม่ได้จนกรอกครบ, เลือกวันที่จากปฏิทิน<br><b>แย่:</b> ปุ่ม “ลบบัญชี” อยู่ติดปุ่ม “บันทึก” และลบทันทีไม่ถามซ้ำ</p></details>
+<details><summary>6. Recognition rather than recall: ให้เห็นแทนการให้จำ</summary><p><b>ความหมาย:</b> ลดภาระความจำ แสดงตัวเลือก คำสั่ง และข้อมูลให้เห็น ไม่บังคับให้จำข้ามหน้า<br><b>ดี:</b> ประวัติการค้นหา, autocomplete, รายการล่าสุด<br><b>แย่:</b> ต้องจำรหัสสินค้า 8 หลักจากหน้าก่อนมากรอกอีกหน้า</p></details>
+<details><summary>7. Flexibility and efficiency of use: ยืดหยุ่นและเร็วสำหรับผู้ชำนาญ</summary><p><b>ความหมาย:</b> มือใหม่ใช้ตามขั้นตอนปกติได้ ส่วนผู้เชี่ยวชาญมีทางลัด<br><b>ดี:</b> Ctrl+C / Ctrl+V, การปัดข้ามขั้นตอน, ปรับแต่งเมนูโปรด<br><b>แย่:</b> ต้องคลิกผ่าน 5 เมนูทุกครั้งแม้ทำเรื่องเดิมทุกวัน</p></details>
+<details><summary>8. Aesthetic and minimalist design: เรียบง่าย ไม่มีข้อมูลเกินจำเป็น</summary><p><b>ความหมาย:</b> ทุกส่วนที่เพิ่มเข้ามาแย่งความสนใจจากสิ่งสำคัญ แสดงเฉพาะสิ่งที่เกี่ยวกับงานที่ทำ (ไม่ได้แปลว่าต้องสวยแค่อย่างเดียว)<br><b>ดี:</b> หน้า Google ที่มีช่องค้นหาเด่นชัด<br><b>แย่:</b> หน้าแรกอัดแบนเนอร์ โฆษณา และข้อความจนหาปุ่มหลักไม่เจอ</p></details>
+<details><summary>9. Help users recognize, diagnose, and recover from errors: error ต้องช่วยแก้ปัญหา</summary><p><b>ความหมาย:</b> ข้อความ error ใช้ภาษาง่าย บอกว่าเกิดอะไรขึ้น และเสนอวิธีแก้<br><b>ดี:</b> “รหัสผ่านต้องมีอย่างน้อย 8 ตัว ตอนนี้มี 5 ตัว”<br><b>แย่:</b> “Error 500” หรือ “เกิดข้อผิดพลาด” เฉยๆ</p></details>
+<details><summary>10. Help and documentation: ความช่วยเหลือที่หาเจอและทำตามได้</summary><p><b>ความหมาย:</b> ระบบดีที่สุดคือใช้ได้โดยไม่ต้องมีคู่มือ แต่ถ้ามีต้องค้นหาง่าย สั้น ตรงกับงานที่ทำ และเป็นขั้นตอน<br><b>ดี:</b> ช่องค้นหาใน Help Center, คำแนะนำตอนใช้งานครั้งแรก<br><b>แย่:</b> คู่มือ PDF 80 หน้าที่ไม่มีสารบัญ</p></details>
+<h3>สรุปสั้นๆ</h3>
+<div class="scroll"><table><tr><th>#</th><th>Heuristic</th></tr>
+<tr><td>1</td><td>Visibility of system status</td></tr><tr><td>2</td><td>Match between system and the real world</td></tr>
+<tr><td>3</td><td>User control and freedom</td></tr><tr><td>4</td><td>Consistency and standards</td></tr>
+<tr><td>5</td><td>Error prevention</td></tr><tr><td>6</td><td>Recognition rather than recall</td></tr>
+<tr><td>7</td><td>Flexibility and efficiency of use</td></tr><tr><td>8</td><td>Aesthetic and minimalist design</td></tr>
+<tr><td>9</td><td>Help users recognize, diagnose, and recover from errors</td></tr><tr><td>10</td><td>Help and documentation</td></tr></table></div>
+<p><b>Severity 0-4:</b> 0 ไม่ใช่ปัญหา · 1 เล็กน้อย · 2 ปานกลาง · 3 สำคัญ · 4 วิกฤต<br><b>รูปแบบตอบ:</b> ปัญหา → heuristic → severity → ข้อเสนอแนะ</p>
+<p><b>ตัวอย่างการตอบ:</b> “ปุ่มชำระเงินไม่มีสถานะหลังกด ผู้ใช้ไม่รู้ว่าสำเร็จหรือไม่ จึงกดซ้ำ” → ละเมิดข้อ 1 Visibility of system status → severity 3 (สำคัญ) → แก้โดยแสดง loading และหน้ายืนยันการชำระเงิน</p>
+<div class="demo"><div class="tag">แบบทดสอบข้อ 4</div><div class="quiz" data-q="q4"></div></div>
+<h3>วิธีประเมินอื่นที่ควรรู้</h3>
+<div class="scroll"><table><tr><th>วิธี</th><th>ใครประเมิน</th><th>ทำอย่างไร</th></tr>
+<tr><td>Heuristic Evaluation</td><td>ผู้เชี่ยวชาญ 3-5 คน</td><td>ตรวจหน้าจอเทียบหลัก 10 ข้อ ระบุปัญหาและ severity</td></tr>
+<tr><td>Usability Testing</td><td>ผู้ใช้จริง</td><td>ให้ทำงานที่กำหนด (task) แล้วสังเกตและวัดเวลา ความสำเร็จ ข้อผิดพลาด</td></tr>
+<tr><td>Cognitive Walkthrough</td><td>ผู้ออกแบบ/ผู้เชี่ยวชาญ</td><td>เดินตามขั้นตอนทีละก้าวในมุมมองมือใหม่ ถามว่าผู้ใช้จะรู้ไหมว่าต้องทำอะไรต่อ</td></tr>
+<tr><td>SUS Questionnaire</td><td>ผู้ใช้จริง</td><td>แบบสอบถาม 10 ข้อ ได้คะแนน 0-100 (ค่าเฉลี่ยประมาณ 68)</td></tr></table></div>
+</section>
+
+<!-- Q5 -->
+<section id="q5"><h2>ข้อ 5: A/B Testing</h2>
+<p class="sub">จำลองการทดลองปุ่มสมัคร A (เดิม) กับ B (ใหม่) ซึ่งโปรแกรมตั้งอัตราจริงของ B ไว้สูงกว่า A เล็กน้อย ลองดูว่าต้องใช้ตัวอย่างเท่าไรจึงมั่นใจได้</p>
+<div class="demo"><div class="tag">เดโม: A/B Test Simulator</div>
+<div class="grid2"><div class="mock"><b>A (control)</b><br><button class="btn ghost" tabindex="-1">สมัครเลย</button></div>
+<div class="mock"><b>B (variant)</b><br><button class="btn" tabindex="-1">เริ่มใช้ฟรี 30 วัน</button></div></div>
+<label for="n">จำนวนผู้เข้าชมต่อกลุ่ม: <b id="nv">500</b></label>
+<input type="range" id="n" min="100" max="20000" step="100" value="500">
+<div style="margin-top:12px"><button class="btn" id="run">รันการทดลอง</button></div>
+<div class="res" id="abRes" aria-live="polite">กด “รันการทดลอง” (สุ่มใหม่ทุกครั้ง ผลจึงต่างกันได้)</div></div>
+<div class="demo"><div class="tag">เดโม: ทดลองซ้ำ 20 ครั้ง (ดูว่าตัวอย่างน้อยหลอกเราได้แค่ไหน)</div><p style="margin-top:0">ใช้จำนวนตัวอย่างตามสไลเดอร์ด้านบน B ดีกว่า A จริง ดูว่าใน 20 ครั้งเจอผลที่มีนัยสำคัญกี่ครั้ง และกี่ครั้งที่สรุปผิดว่า A ชนะ</p><button class="btn" id="run20">รัน 20 ครั้ง</button><div class="res" id="ab20" aria-live="polite">ลองตั้งตัวอย่างที่ 100 แล้วเทียบกับ 10,000</div></div>
+<p><b>ขั้นตอน:</b> ตั้งเป้าหมายและ metric → ตั้งสมมติฐาน → เปลี่ยนตัวแปรเดียว → สุ่มแบ่งผู้ใช้ → รันให้นานพอ → ดูนัยสำคัญ (p &lt; 0.05) → นำผู้ชนะไปใช้</p>
+<div class="demo"><div class="tag">แบบทดสอบข้อ 5</div><div class="quiz" data-q="q5"></div></div>
+<p><b>ข้อจำกัด:</b> บอกว่า “อะไรดีกว่า” แต่ไม่บอก “ทำไม” ต้องมี traffic พอ และห้ามหยุดทดลองเร็วเกินไป ลองรันที่ 100 คนหลายรอบจะเห็นว่าผลแกว่งมาก</p>
+</section>
+
+<!-- Q6 -->
+<section id="q6"><h2>ข้อ 6: Universal Design</h2>
+<p class="sub">UD คือออกแบบให้ทุกคนใช้ได้ตั้งแต่แรก ลองเครื่องมือตรวจ 3 อย่างที่ใช้จริงในงาน UI</p>
+<div class="demo"><div class="tag">เดโม 1: ตัวเช็คคอนทราสต์ (WCAG)</div>
+<div class="sw"><label for="fg" style="margin:0">สีตัวอักษร</label><input type="color" id="fg" value="#8a8a8a">
+<label for="bg2" style="margin:0">สีพื้น</label><input type="color" id="bg2" value="#ffffff"></div>
+<div id="cPrev" style="margin-top:12px;padding:16px;border-radius:8px;font-size:18px">ตัวอย่างข้อความบนพื้นหลัง</div>
+<div class="res" id="cRes" aria-live="polite"></div></div>
+<div class="demo"><div class="tag">เดโม 2: ขนาดปุ่มสัมผัส (Touch target)</div>
+<p style="margin-top:0">แนะนำอย่างน้อย 44×44 px ลองกดปุ่มทั้งสองบนมือถือหรือเมาส์</p>
+<div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap"><button style="width:20px;height:20px;border:1px solid var(--ink);background:var(--surf);border-radius:4px;padding:0" aria-label="ปุ่มเล็ก 20px">✕</button><span>เล็ก 20px (ยากสำหรับมือสั่นหรือนิ้วใหญ่)</span></div>
+<div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin-top:10px"><button class="btn" style="width:48px;padding:0" aria-label="ปุ่มใหญ่ 48px">✕</button><span>ใหญ่ 48px (ผ่านเกณฑ์)</span></div></div>
+<div class="demo"><div class="tag">เดโม 3: ไม่ใช้สีอย่างเดียวสื่อความหมาย</div>
+<div class="grid2"><div><b>แย่:</b> สีอย่างเดียว<br><span style="display:inline-block;width:16px;height:16px;border-radius:50%;background:#2e9e5b;vertical-align:middle"></span> <span style="display:inline-block;width:16px;height:16px;border-radius:50%;background:#d6453d;vertical-align:middle"></span> ผู้ตาบอดสีแยกไม่ออก</div>
+<div><b>ดี:</b> สี + ไอคอน + ข้อความ<br><span class="ok">✔ ผ่าน</span> &nbsp; <span class="bad">✖ ไม่ผ่าน</span></div></div></div>
+<div class="demo"><div class="tag">เดโม 4: ผู้ใช้ขยายตัวอักษร</div><label for="zs">ขนาดตัวอักษร: <b id="zv">100</b>%</label><input type="range" id="zs" min="100" max="200" step="10" value="100"><div class="mock" id="zt" style="margin-top:10px"><b>ตะกร้าสินค้า</b><p style="margin:4px 0">เสื้อยืดสีขาว ไซซ์ M จำนวน 2 ชิ้น ราคา 590 บาท</p><button class="btn" style="font-size:inherit">ชำระเงิน</button></div><p class="sub" style="margin-bottom:0">หน้าที่ดีต้องอ่านและกดได้ครบแม้ขยาย 200% (ใช้หน่วย rem/em ไม่ล็อกความสูงกล่อง) ลองเทียบกับหน้าที่ล็อกขนาด px จะเห็นว่าข้อความล้นหรือโดนตัด</p></div>
+<div class="scroll"><table><tr><th>หลักการ UD</th><th>ตัวอย่างใน UI</th></tr>
+<tr><td>1 Equitable Use</td><td>screen reader ใช้ได้เท่าคนทั่วไป</td></tr>
+<tr><td>2 Flexibility in Use</td><td>ใช้ได้ทั้งเสียง สัมผัส คีย์บอร์ด</td></tr>
+<tr><td>3 Simple and Intuitive</td><td>ไม่ต้องอ่านคู่มือ</td></tr>
+<tr><td>4 Perceptible Information</td><td>ข้อความ + ไอคอน + เสียง, คำบรรยายวิดีโอ, คอนทราสต์ 4.5:1</td></tr>
+<tr><td>5 Tolerance for Error</td><td>Undo, เตือนก่อนลบ</td></tr>
+<tr><td>6 Low Physical Effort</td><td>ปุ่มใหญ่ กดง่าย</td></tr>
+<tr><td>7 Size and Space</td><td>touch target ใหญ่พอ เว้นระยะห่าง</td></tr></table></div>
+<div class="demo"><div class="tag">แบบทดสอบข้อ 6</div><div class="quiz" data-q="q6"></div></div>
+<p><b>WCAG = POUR:</b> Perceivable, Operable, Understandable, Robust<br><b>แยกให้ออก:</b> Universal Design (ทุกคนตั้งแต่แรก) · Accessibility (ทำให้ผู้มีข้อจำกัดเข้าถึงได้) · Inclusive Design (คำนึงถึงความหลากหลายของผู้ใช้)</p>
+</section>
+</main>
+<script>
+const $=s=>document.querySelector(s);
+/* Q1 form */
+let ver='bad';
+function renderForm(){
+  const box=$('#formBox'),note=$('#formNote');
+  if(ver==='bad'){
+    box.innerHTML=`<label>อีเมล</label><input type="text" id="e1"><label>รหัสผ่าน</label><input type="text" id="p1"><div style="margin-top:12px"><button class="btn" id="s1">ส่ง</button></div><div class="msg e" id="m1"></div>`;
+    note.innerHTML='<b class="bad">ปัญหา:</b> ไม่มี feedback ระหว่างพิมพ์ (ข้อ 3), error คลุมเครือไม่บอกช่องที่ผิด (ข้อ 5), รหัสผ่านโชว์เป็นข้อความ (ข้อ 8), ไม่มีหน้าจบงาน (ข้อ 4)';
+    $('#s1').onclick=()=>{const ok=/\S+@\S+\.\S+/.test($('#e1').value)&&$('#p1').value.length>=8;$('#m1').className='msg '+(ok?'o':'e');$('#m1').textContent=ok?'':'เกิดข้อผิดพลาด'};
+  }else{
+    box.innerHTML=`<label for="e2">อีเมล</label><input type="email" id="e2" autocomplete="email" placeholder="name@example.com"><div class="msg" id="me"></div>
+<label for="p2">รหัสผ่าน (อย่างน้อย 8 ตัว)</label><input type="password" id="p2" autocomplete="new-password"><div class="msg" id="mp"></div>
+<label style="font-weight:400"><input type="checkbox" id="sh"> แสดงรหัสผ่าน</label>
+<div style="margin-top:12px;display:flex;gap:8px"><button class="btn" id="s2" disabled>สร้างบัญชี</button><button class="btn ghost" id="c2" type="button">ล้างข้อมูล</button></div><div class="msg o" id="m2" role="status"></div>`;
+    note.innerHTML='<b class="ok">แก้แล้ว:</b> ตรวจทันทีทุกช่อง (ข้อ 3), บอกว่าผิดช่องไหนและแก้อย่างไร (ข้อ 5), ปุ่มส่งถูกปิดจนกรอกถูก (ข้อ 5), ปุ่มแสดงรหัสผ่านและล้างข้อมูล (ข้อ 7, 6), มีข้อความสำเร็จเป็นจุดจบ (ข้อ 4), ป้ายกำกับอยู่ติดช่อง (ข้อ 8)';
+    const e=$('#e2'),p=$('#p2'),b=$('#s2');
+    const v=()=>{const eo=/^\S+@\S+\.\S+$/.test(e.value),po=p.value.length>=8;
+      if(e.value){e.className=eo?'good':'err';$('#me').className='msg '+(eo?'o':'e');$('#me').textContent=eo?'✔ อีเมลถูกต้อง':'✖ อีเมลต้องมี @ เช่น name@example.com'}
+      if(p.value){p.className=po?'good':'err';$('#mp').className='msg '+(po?'o':'e');$('#mp').textContent=po?'✔ ใช้ได้':`✖ ต้องอีก ${8-p.value.length} ตัวอักษร`}
+      b.disabled=!(eo&&po)};
+    e.oninput=p.oninput=v;
+    $('#sh').onchange=ev=>p.type=ev.target.checked?'text':'password';
+    $('#c2').onclick=()=>{e.value=p.value='';e.className=p.className='';$('#me').textContent=$('#mp').textContent='';v()};
+    b.onclick=()=>{$('#m2').textContent='✔ สร้างบัญชีสำเร็จ ตรวจอีเมลเพื่อยืนยันขั้นต่อไป';b.disabled=true};
+  }
+}
+$('#vBad').onclick=()=>{ver='bad';$('#vBad').setAttribute('aria-pressed',true);$('#vGood').setAttribute('aria-pressed',false);renderForm()};
+$('#vGood').onclick=()=>{ver='good';$('#vGood').setAttribute('aria-pressed',true);$('#vBad').setAttribute('aria-pressed',false);renderForm()};
+renderForm();
+
+/* Q2 card sorting */
+const cats=['สินค้า','สั่งซื้อและจัดส่ง','ช่วยเหลือ'];
+const items=[['เสื้อผ้า',0],['รองเท้า',0],['กระเป๋า',0],['ตะกร้าสินค้า',1],['ติดตามพัสดุ',1],['วิธีชำระเงิน',1],['คืนสินค้า',2],['คำถามที่พบบ่อย',2],['ติดต่อเรา',2]].sort(()=>Math.random()-.5);
+let place={},selc=null;
+function drawCS(){
+  const pool=$('#pool');pool.innerHTML='';
+  items.forEach(([n],i)=>{if(place[i]===undefined)pool.append(mk(i))});
+  $('#bins').innerHTML='';
+  cats.forEach((c,ci)=>{const d=document.createElement('div');d.className='bin';d.innerHTML=`<h4>${c}</h4>`;const z=document.createElement('div');z.className='cards';z.setAttribute('role','button');z.tabIndex=0;
+    z.onclick=ev=>{if(ev.target!==z)return;if(selc!==null){place[selc]=ci;selc=null;drawCS()}};
+    z.onkeydown=ev=>{if(ev.key==='Enter')z.click()};
+    items.forEach((_,i)=>{if(place[i]===ci)z.append(mk(i,true))});d.append(z);$('#bins').append(d)});
+}
+function mk(i,inBin){const b=document.createElement('button');b.className='card'+(selc===i?' sel':'');b.textContent=items[i][0];b.dataset.i=i;
+  b.onclick=ev=>{ev.stopPropagation();if(inBin){delete place[i]}else selc=(selc===i?null:i);drawCS()};return b}
+$('#csCheck').onclick=()=>{
+  if(Object.keys(place).length<items.length){$('#csRes').textContent='ยังจัดไม่ครบ เหลือการ์ดในกองบน '+(items.length-Object.keys(place).length)+' ใบ';return}
+  let ok=0;document.querySelectorAll('.bin .card').forEach(c=>{const i=+c.dataset.i;const r=items[i][1]===place[i];if(r)ok++;c.classList.add(r?'right':'wrong')});
+  const pct=Math.round(ok/items.length*100);
+  $('#csRes').innerHTML=`ตรงกับโครงสร้างอ้างอิง <b>${ok}/${items.length} (${pct}%)</b> `+(pct===100?'<span class="ok">ผู้ใช้เห็นตรงกับ sitemap</span>':'<span class="warn">การ์ดสีแดงคือจุดที่ผู้ใช้คิดต่างจากผู้ออกแบบ ควรพิจารณาเปลี่ยนชื่อหมวดหรือย้ายรายการ</span>');
+};
+$('#csReset').onclick=()=>{place={};selc=null;$('#csRes').textContent='จัดการ์ดให้ครบก่อนตรวจคำตอบ';drawCS()};
+drawCS();
+
+/* Q4 heuristics */
+const H=['Visibility of system status','Match between system and real world','User control and freedom','Consistency and standards','Error prevention','Recognition rather than recall','Flexibility and efficiency','Aesthetic and minimalist design','Recognize, diagnose, recover from errors','Help and documentation'];
+const S=[
+['กดชำระเงินแล้วหน้าจอเงียบ ไม่มี loading หรือสถานะใดๆ',0,3,'แสดง spinner และข้อความ “กำลังดำเนินการ”'],
+['แอปใช้คำว่า “Exception 0x80” เมื่อใส่เลขบัตรผิด',8,4,'เขียน error เป็นภาษาง่าย บอกสาเหตุและวิธีแก้'],
+['กดลบบัญชีได้ทันทีด้วยปุ่มเดียว ไม่มีการยืนยัน',4,4,'เพิ่มหน้ายืนยัน หรือให้กู้คืนได้ภายใน 30 วัน'],
+['หน้า A ปุ่มบันทึกอยู่ซ้าย หน้า B อยู่ขวา และใช้คำว่า “ตกลง” “เซฟ” ปนกัน',3,2,'กำหนด design system ใช้ตำแหน่งและคำเดียวกัน'],
+['หน้าแรกอัดโฆษณา ข้อความ และแบนเนอร์เกินจำเป็น หาปุ่มหลักไม่เจอ',7,3,'ตัดสิ่งที่ไม่จำเป็น เน้นปุ่มหลักเดียว'],
+['ผู้ใช้ต้องจำรหัสสินค้า 8 หลักจากหน้าก่อนมากรอกในหน้าถัดไป',5,3,'ให้เลือกจากรายการหรือคัดลอกอัตโนมัติ']];
+$('#heur').innerHTML=S.map((s,i)=>`<div class="mock"><b>กรณี ${i+1}:</b> ${s[0]}<label for="h${i}" style="font-weight:400">ละเมิดข้อใด</label><select id="h${i}"><option value="">— เลือก —</option>${H.map((h,j)=>`<option value="${j}">${j+1}. ${h}</option>`).join('')}</select><div class="msg" id="hm${i}"></div></div>`).join('');
+$('#hCheck').onclick=()=>{let ok=0,done=0;S.forEach((s,i)=>{const v=$('#h'+i).value,m=$('#hm'+i);if(v==='')return;done++;
+  if(+v===s[1]){ok++;m.className='msg o';m.textContent=`✔ ถูกต้อง · severity ${s[2]} · แนะนำ: ${s[3]}`}
+  else{m.className='msg e';m.textContent=`✖ ลองใหม่ (เฉลย: ข้อ ${s[1]+1}) · severity ${s[2]} · แนะนำ: ${s[3]}`}});
+  $('#hRes').innerHTML=done<S.length?`ตอบแล้ว ${done}/${S.length} ข้อ ถูก ${ok}`:`คะแนน <b>${ok}/${S.length}</b>`};
+
+/* Q5 A/B */
+const pA=.04,pB=.052;
+const bin=(n,p)=>{let c=0;for(let i=0;i<n;i++)if(Math.random()<p)c++;return c};
+const erf=x=>{const t=1/(1+.3275911*Math.abs(x)),y=1-(((((1.061405429*t-1.453152027)*t)+1.421413741)*t-.284496736)*t+.254829592)*t*Math.exp(-x*x);return x>=0?y:-y};
+const cdf=z=>.5*(1+erf(z/Math.SQRT2));
+$('#n').oninput=e=>$('#nv').textContent=(+e.target.value).toLocaleString();
+$('#run').onclick=()=>{const n=+$('#n').value,a=bin(n,pA),b=bin(n,pB),ra=a/n,rb=b/n,pp=(a+b)/(2*n),se=Math.sqrt(pp*(1-pp)*2/n),z=se?(rb-ra)/se:0,p=2*(1-cdf(Math.abs(z)));
+  const sig=p<.05,w=rb>ra?'B':'A';
+  $('#abRes').innerHTML=`<div>A: ${a} สมัคร จาก ${n.toLocaleString()} คน (<b>${(ra*100).toFixed(2)}%</b>)</div><div class="bar" style="width:${Math.max(4,ra*1000)}%">A ${(ra*100).toFixed(1)}%</div>
+<div>B: ${b} สมัคร จาก ${n.toLocaleString()} คน (<b>${(rb*100).toFixed(2)}%</b>)</div><div class="bar" style="width:${Math.max(4,rb*1000)}%">B ${(rb*100).toFixed(1)}%</div>
+<div>ส่วนต่าง ${((rb-ra)*100).toFixed(2)} จุดเปอร์เซ็นต์ · p-value = <b>${p<.001?'&lt; 0.001':p.toFixed(3)}</b></div>
+<div style="margin-top:6px">${sig?`<span class="ok">มีนัยสำคัญทางสถิติ (p &lt; 0.05)</span> ${w==='B'?'เลือก B ได้':'ผลชี้ว่า A ดีกว่า ซึ่งขัดกับค่าจริง เป็นความผิดพลาดแบบสุ่ม'}`:'<span class="warn">ยังสรุปไม่ได้ (p ≥ 0.05)</span> ข้อมูลน้อยเกินไป ควรเพิ่มจำนวนตัวอย่างแล้วรันต่อ'}</div>`};
+
+/* quizzes */
+const QZ={
+q1:[['ฟอร์มแจ้ง error ไม่บอกว่าช่องไหนผิด ละเมิดข้อใดมากที่สุด',['Strive for consistency','Offer simple error handling / Prevent errors','Reduce short-term memory load','Design dialogs to yield closure'],1,'error ต้องชี้ช่องที่ผิดและบอกวิธีแก้'],
+['หน้า “ชำระเงินสำเร็จ” หลังขั้นตอน checkout ตรงกับข้อใด',['Permit easy reversal of actions','Offer informative feedback','Seek universal usability','Design dialogs to yield closure'],3,'ลำดับงานต้องมีจุดจบให้ผู้ใช้รู้ว่างานเสร็จแล้ว'],
+['ปุ่ม Undo และถังขยะที่กู้คืนได้ ตรงกับข้อใด',['Permit easy reversal of actions','Strive for consistency','Reduce short-term memory load','Offer informative feedback'],0,'ผู้ใช้ย้อนกลับได้ จึงกล้าลอง'],
+['Autocomplete และการแสดงสรุปรายการก่อนยืนยัน ตรงกับข้อใด',['Keep users in control','Offer informative feedback','Reduce short-term memory load','Prevent errors'],2,'ให้ผู้ใช้เห็นแทนที่จะต้องจำ']],
+q2:[['ต้องการให้ผู้ใช้จัดกลุ่มและตั้งชื่อกลุ่มเอง ควรใช้ Card Sorting แบบใด',['Closed','Open','Tree Testing','A/B Testing'],1,'Open เหมาะกับการสร้างโครงสร้างใหม่ที่ยังไม่รู้หมวดหมู่'],
+['Tree Testing ใช้ทำอะไร',['วัดสีที่ผู้ใช้ชอบ','ทดสอบโครงสร้างโดยไม่มี UI ให้ผู้ใช้หาข้อมูลจากแผนผัง','เปรียบเทียบปุ่มสองแบบ','ตรวจคอนทราสต์'],1,'ใช้ยืนยันว่า sitemap ใช้งานได้จริง'],
+['ข้อใดไม่ใช่องค์ประกอบของ IA',['Organization','Labeling','Navigation','Animation'],3,'IA มี Organization, Labeling, Navigation, Search'],
+['ลำดับขั้นตอนที่ถูกต้อง',['Sitemap → Card Sorting → Tree Testing','Card Sorting → Sitemap → Tree Testing','Tree Testing → Sitemap → Card Sorting','Sitemap → Tree Testing → Card Sorting'],1,'ให้ผู้ใช้จัดกลุ่มก่อน สร้าง sitemap แล้วจึงยืนยันด้วย Tree Testing']],
+q4:[['การถามยืนยันก่อนลบข้อมูล ตรงกับ heuristic ข้อใด',['Error prevention','Visibility of system status','Consistency and standards','Help and documentation'],0,'ป้องกันก่อนเกิดข้อผิดพลาด'],
+['แอปแสดงข้อความ “Error 500” เฉยๆ ละเมิด heuristic ข้อใด',['Aesthetic and minimalist design','Flexibility and efficiency','Recognize, diagnose, and recover from errors','Recognition rather than recall'],2,'error ควรใช้ภาษาง่าย บอกสาเหตุและวิธีแก้'],
+['Severity 4 หมายถึงอะไร',['เล็กน้อย','ปานกลาง','ไม่ใช่ปัญหา','วิกฤต ต้องแก้ก่อนปล่อย'],3,'0 ไม่ใช่ปัญหา ถึง 4 วิกฤต'],
+['ข้อจำกัดของ Heuristic Evaluation คืออะไร',['ต้องใช้ผู้ใช้จริงหลายร้อยคน','ผู้ประเมินไม่ใช่ผู้ใช้จริง อาจพลาดปัญหาที่ผู้ใช้เจอ','ใช้ได้กับเว็บเท่านั้น','ใช้เวลาหลายเดือน'],1,'จึงควรใช้ร่วมกับ Usability Testing']],
+q5:[['A/B Testing ที่ดีควรเปลี่ยนกี่ตัวแปรต่อการทดลองหนึ่งครั้ง',['หนึ่งตัวแปร','สามตัวแปร','ทุกอย่างที่อยากปรับ','กี่ตัวก็ได้'],0,'เปลี่ยนตัวเดียวจึงสรุปสาเหตุได้'],
+['p < 0.05 โดยทั่วไปหมายความว่าอะไร',['B ดีกว่า A แน่นอน 100%','ความต่างมีนัยสำคัญ โอกาสเกิดจากการสุ่มต่ำ','ตัวอย่างน้อยเกินไป','ต้องรันใหม่เสมอ'],1,'เป็นเกณฑ์ที่ใช้ตัดสินความมีนัยสำคัญทางสถิติ'],
+['ข้อจำกัดหลักของ A/B Testing คือข้อใด',['ใช้ข้อมูลจริงไม่ได้','บอกว่าอะไรดีกว่า แต่ไม่บอกว่าทำไม','ทดสอบได้เฉพาะสีปุ่ม','ไม่ต้องมี traffic'],1,'ต้องใช้ร่วมกับวิธีเชิงคุณภาพเพื่อหาเหตุผล'],
+['ข้อผิดพลาดที่พบบ่อยคือข้อใด',['รันให้นานพอ','สุ่มแบ่งกลุ่ม','หยุดทดลองเร็วเกินไปเมื่อเห็นฝั่งหนึ่งนำ','ตั้งสมมติฐานก่อนทดลอง'],2,'ผลช่วงแรกแกว่งมาก ตามที่เห็นในเดโมรัน 20 ครั้ง']],
+q6:[['อัตราส่วนคอนทราสต์ขั้นต่ำ WCAG AA สำหรับข้อความปกติคือเท่าใด',['2:1','3:1','4.5:1','10:1'],2,'ข้อความใหญ่ใช้ 3:1 และ AAA ใช้ 7:1'],
+['ตัว P ใน POUR ย่อมาจากอะไร',['Perceivable','Practical','Predictable','Private'],0,'Perceivable, Operable, Understandable, Robust'],
+['ขนาด touch target ที่แนะนำอย่างน้อยคือเท่าใด',['16×16 px','24×24 px','44×44 px','100×100 px'],2,'ปุ่มใหญ่พอช่วยผู้ที่มือสั่นหรือนิ้วใหญ่'],
+['ใช้สีแดง/เขียวอย่างเดียวบอกสถานะ ละเมิดหลักข้อใดของ UD',['Low Physical Effort','Perceptible Information','Size and Space','Flexibility in Use'],1,'ควรใช้สีร่วมกับไอคอนและข้อความ เผื่อผู้ตาบอดสี']]};
+function initQuiz(box){const qs=QZ[box.dataset.q];let sc=0,dn=0;
+ box.innerHTML=qs.map((q,i)=>`<div class="mock"><b>${i+1}. ${q[0]}</b><div style="display:grid;gap:6px;margin-top:8px">${q[1].map((o,j)=>`<button class="btn ghost" style="text-align:left" data-i="${i}" data-j="${j}">${o}</button>`).join('')}</div><div class="msg"></div></div>`).join('')+'<div class="res" data-s aria-live="polite">ตอบให้ครบทุกข้อเพื่อดูคะแนน</div>';
+ box.onclick=e=>{const b=e.target.closest('button[data-j]');if(!b){return}const m=b.closest('.mock');if(m.dataset.done)return;m.dataset.done=1;dn++;const q=qs[+b.dataset.i],ok=+b.dataset.j===q[2];if(ok)sc++;
+  m.querySelectorAll('button').forEach(x=>{x.disabled=true;x.style.opacity=1;if(+x.dataset.j===q[2]){x.style.borderColor='var(--ok)';x.style.background='var(--okbg)'}});
+  if(!ok){b.style.borderColor='var(--bad)';b.style.background='var(--badbg)'}
+  const g=m.querySelector('.msg');g.className='msg '+(ok?'o':'e');g.textContent=(ok?'✔ ถูกต้อง · ':'✖ ยังไม่ถูก · ')+q[3];
+  if(dn===qs.length){const s=box.querySelector('[data-s]');s.innerHTML=`คะแนน <b>${sc}/${qs.length}</b> `+(sc===qs.length?'<span class="ok">เยี่ยม</span>':'<span class="warn">ลองทบทวนข้อที่ผิดแล้วทำใหม่</span>')+' <button class="btn ghost" data-r>ทำใหม่</button>';s.querySelector('[data-r]').onclick=()=>initQuiz(box)}}}
+document.querySelectorAll('.quiz').forEach(initQuiz);
+/* extra demos */
+const esc=s=>s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+let tasks=['อ่านสไลด์ Heuristics'],lastDel=null;
+function tr(){$('#tList').innerHTML=tasks.map((t,i)=>`<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;padding:4px 0;border-bottom:1px solid var(--line)"><span>${esc(t)}</span><button class="btn ghost" data-i="${i}">ลบ</button></div>`).join('')||'<p class="sub">ยังไม่มีงาน เพิ่มงานแรกได้เลย</p>'}
+$('#tIn').onkeydown=e=>{if(e.key==='Enter'&&e.target.value.trim()){tasks.push(e.target.value.trim());$('#tMsg').textContent='✔ เพิ่มงานแล้ว: '+e.target.value.trim();e.target.value='';tr()}};
+$('#tList').onclick=e=>{const b=e.target.closest('button[data-i]');if(!b)return;const i=+b.dataset.i;lastDel={t:tasks[i],i};tasks.splice(i,1);tr();$('#tMsg').innerHTML='ลบ “'+esc(lastDel.t)+'” แล้ว <button class="btn ghost" id="undo">เลิกทำ</button>'};
+$('#tMsg').onclick=e=>{if(e.target.id==='undo'&&lastDel){tasks.splice(lastDel.i,0,lastDel.t);$('#tMsg').textContent='✔ กู้คืน “'+lastDel.t+'” แล้ว';lastDel=null;tr()}};
+document.addEventListener('keydown',e=>{if((e.key==='n'||e.key==='N')&&!/INPUT|SELECT|TEXTAREA/.test(document.activeElement.tagName)){e.preventDefault();$('#tIn').focus()}});tr();
+/* tree test */
+const TREE={'สินค้า':['เสื้อผ้า','รองเท้า','กระเป๋า'],'สั่งซื้อและจัดส่ง':['ตะกร้าสินค้า','ติดตามพัสดุ','วิธีชำระเงิน'],'ช่วยเหลือ':['คืนสินค้า','คำถามที่พบบ่อย','ติดต่อเรา']};
+const TT=[['ต้องการคืนสินค้าที่ซื้อไป','คืนสินค้า'],['อยากรู้ว่าพัสดุถึงไหนแล้ว','ติดตามพัสดุ'],['อยากดูรองเท้า','รองเท้า']];
+let ti=0,tclk=0,topen=null,tscore=0;
+function drawTT(msg){const box=$('#tt');if(ti>=TT.length){box.innerHTML=`<div class="res">จบแล้ว สำเร็จ <b>${tscore}/${TT.length}</b> งาน ถ้างานไหนคลิกเยอะหรือหาไม่เจอ แปลว่าชื่อหมวดหรือการจัดกลุ่มต้องปรับ</div><button class="btn" id="ttR">เริ่มใหม่</button>`;$('#ttR').onclick=()=>{ti=0;tscore=0;tclk=0;topen=null;drawTT()};return}
+ box.innerHTML=`<p style="margin-top:0"><b>งานที่ ${ti+1}/${TT.length}:</b> ${TT[ti][0]}</p><div style="display:flex;gap:8px;flex-wrap:wrap">${Object.keys(TREE).map(k=>`<button class="btn ${topen===k?'':'ghost'}" data-c="${k}">${k}</button>`).join('')}</div>${topen?`<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;padding-left:16px">${TREE[topen].map(k=>`<button class="card" data-l="${k}">${k}</button>`).join('')}</div>`:''}<div class="msg" aria-live="polite">${msg||'คลิกที่ ('+tclk+' คลิก)'}</div>`;
+ box.querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>{tclk++;topen=b.dataset.c;drawTT()});
+ box.querySelectorAll('[data-l]').forEach(b=>b.onclick=()=>{tclk++;const ok=b.dataset.l===TT[ti][1];if(ok)tscore++;const c=tclk;ti++;tclk=0;topen=null;drawTT((ok?'✔ เจอแล้ว':'✖ ไม่ใช่')+` ในงานก่อนหน้า (ใช้ ${c} คลิก)`)})}
+drawTT();
+/* A/B x20 */
+$('#run20').onclick=()=>{const n=+$('#n').value;let sigB=0,sigA=0,none=0;for(let k=0;k<20;k++){const a=bin(n,pA),b=bin(n,pB),pp=(a+b)/(2*n),se=Math.sqrt(pp*(1-pp)*2/n),z=se?(b/n-a/n)/se:0,p=2*(1-cdf(Math.abs(z)));if(p<.05){z>0?sigB++:sigA++}else none++}
+ $('#ab20').innerHTML=`n = ${n.toLocaleString()} ต่อกลุ่ม: <span class="ok">สรุปถูก (B ชนะ) ${sigB} ครั้ง</span> · <span class="warn">สรุปไม่ได้ ${none} ครั้ง</span> · <span class="bad">สรุปผิด (A ชนะ) ${sigA} ครั้ง</span><br>ยิ่งตัวอย่างน้อย ยิ่งสรุปไม่ได้หรือสรุปผิดบ่อย`};
+$('#zs').oninput=e=>{$('#zv').textContent=e.target.value;$('#zt').style.fontSize=(16*e.target.value/100)+'px'};
+/* Q6 contrast */
+const lum=h=>{const c=[1,3,5].map(i=>parseInt(h.substr(i,2),16)/255).map(v=>v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4));return .2126*c[0]+.7152*c[1]+.0722*c[2]};
+function cc(){const f=$('#fg').value,b=$('#bg2').value,l1=lum(f),l2=lum(b),r=(Math.max(l1,l2)+.05)/(Math.min(l1,l2)+.05);
+  $('#cPrev').style.color=f;$('#cPrev').style.background=b;
+  const t=(ok,txt)=>`<span class="${ok?'ok':'bad'}">${ok?'✔':'✖'} ${txt}</span>`;
+  $('#cRes').innerHTML=`อัตราส่วน <b>${r.toFixed(2)}:1</b><br>${t(r>=4.5,'AA ข้อความปกติ (4.5:1)')} · ${t(r>=3,'AA ข้อความใหญ่ (3:1)')} · ${t(r>=7,'AAA (7:1)')}`}
+$('#fg').oninput=$('#bg2').oninput=cc;cc();
+</script>
+</body>
+</html>
